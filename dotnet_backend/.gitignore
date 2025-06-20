@@ -1,0 +1,18 @@
+# Ignore .NET build output
+bin/
+obj/
+
+# Optional: ignore user-specific IDE settings
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Optional: ignore Rider/VSCode/JetBrains
+.vscode/
+.idea/
+*.csproj.user
+
+# Optional: ignore test result and coverage
+TestResults/
+coverage/
