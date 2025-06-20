@@ -1,0 +1,12 @@
+{
+  "name": "postgres",
+  "features": {
+    "ghcr.io/devcontainers/features/postgres:1": {
+      "version": "15",
+      "database": "backend",
+      "user": "dev_backend",
+      "password": "1234567890"
+    }
+  },
+  "forwardPorts": [5432]
+}

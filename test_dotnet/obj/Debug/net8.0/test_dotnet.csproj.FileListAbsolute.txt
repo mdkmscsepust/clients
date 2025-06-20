@@ -1,0 +1,15 @@
+/workspaces/clients/test_dotnet/bin/Debug/net8.0/test_dotnet
+/workspaces/clients/test_dotnet/bin/Debug/net8.0/test_dotnet.deps.json
+/workspaces/clients/test_dotnet/bin/Debug/net8.0/test_dotnet.runtimeconfig.json
+/workspaces/clients/test_dotnet/bin/Debug/net8.0/test_dotnet.dll
+/workspaces/clients/test_dotnet/bin/Debug/net8.0/test_dotnet.pdb
+/workspaces/clients/test_dotnet/obj/Debug/net8.0/test_dotnet.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/clients/test_dotnet/obj/Debug/net8.0/test_dotnet.AssemblyInfoInputs.cache
+/workspaces/clients/test_dotnet/obj/Debug/net8.0/test_dotnet.AssemblyInfo.cs
+/workspaces/clients/test_dotnet/obj/Debug/net8.0/test_dotnet.csproj.CoreCompileInputs.cache
+/workspaces/clients/test_dotnet/obj/Debug/net8.0/test_dotnet.sourcelink.json
+/workspaces/clients/test_dotnet/obj/Debug/net8.0/test_dotnet.dll
+/workspaces/clients/test_dotnet/obj/Debug/net8.0/refint/test_dotnet.dll
+/workspaces/clients/test_dotnet/obj/Debug/net8.0/test_dotnet.pdb
+/workspaces/clients/test_dotnet/obj/Debug/net8.0/test_dotnet.genruntimeconfig.cache
+/workspaces/clients/test_dotnet/obj/Debug/net8.0/ref/test_dotnet.dll
