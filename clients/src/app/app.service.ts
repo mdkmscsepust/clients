@@ -7,6 +7,7 @@ import { Observable, Subject } from 'rxjs';
 export class AppService {
   private socket: WebSocket | null = null;
   private messageSubject = new Subject<string>();
+  apiUrl: string = "http://localhost:8000/chat-stream"
 
   connect(url: string): void {
     this.socket = new WebSocket(url);
@@ -42,5 +43,10 @@ export class AppService {
 
   close(): void {
     this.socket?.close();
+  }
+
+  streamResponse(prompt: string): EventSource {
+    const url = `${this.apiUrl}?prompt=${encodeURIComponent(prompt)}`;
+    return new EventSource(url);
   }
 }

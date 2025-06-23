@@ -1,10 +1,11 @@
-from fastapi import FastAPI, WebSocket
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
 import ollama
-
+import asyncio
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-connected_clients = []
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -12,25 +13,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
-@app.get("/me")
-async def root(content: str):
-    response = ollama.chat(
-    model='llama3',
-    messages=[
-        {'role': 'user', 'content': content}
-    ]
-    )
-    return response['message']['content'].replace('\\','\n')
 
-@app.websocket("/ws")
-async def websocketendpoint(websocket: WebSocket):
-    await websocket.accept()
-    connected_clients.append(websocket)
-    while True:
-        data = await websocket.receive_text()
-        #await websocket.send_text(f"Message text was: {data}")
-        for client in connected_clients:
-            await client.send_text(data)
-        if data == "exit":
-            await websocket.close()
-            break
+@app.get("/chat-stream")
+async def chat_stream(prompt: str):
+    async def event_generator():
+        stream = ollama.chat(
+            model="llama3",
+            messages=[{"role": "user", "content": prompt}],
+            stream=True
+        )
+        buffer = ""
+        for chunk in stream:
+            buffer += chunk["message"]["content"]
+            while ' ' in buffer:
+                word, buffer = buffer.split(' ', 1)
+                yield f"data: {word} \n\n"
+                await asyncio.sleep(0.05)
+        if buffer:
+            yield f"data: {buffer.strip()} \n\n"
+        yield "data: [END]\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")

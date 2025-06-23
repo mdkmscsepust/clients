@@ -1,6 +1,6 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit,ChangeDetectorRef } from '@angular/core';
 import { AppService } from './app.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -12,24 +12,45 @@ import { FormsModule } from '@angular/forms';
 export class App implements OnInit {
   message = '';
   messages: string[] = [];
-  constructor(private appService: AppService, private ngZone: NgZone) { 
+   prompt = 'বাংলাদেশের রাজধানী কোথায়?';
+  response = '';
+  loading = false;
+  constructor(private appService: AppService, private ngZone: NgZone, private cdRef: ChangeDetectorRef) { 
     // Initialize any services or data here if needed
 
   }
   protected title = 'clients';
   ngOnInit() {
-    
-    this.appService.connect('ws://localhost:8000/ws'); // or ws:// for local dev
-
-    this.appService.messages().subscribe((msg) => {
-      //this.ngZone.run(() => {
-      this.messages.push(msg);
-    //});
-    });
   }
 
   sendMessage() {
     this.appService.send(this.message);
     this.message = '';
+  }
+
+  startStream() {
+    this.response = '';
+    this.loading = true;
+
+    const stream = this.appService.streamResponse(this.prompt);
+    stream.onmessage = (event) => {
+      this.ngZone.run(() => {
+      if (event.data === '[END]') {
+        stream.close();
+        this.loading = false;
+      } else {
+        this.response += event.data + ' ';
+        this.cdRef.detectChanges();
+      }
+    })
+    };
+
+    stream.onerror = () => {
+      this.ngZone.run(() => {
+      this.response += '\n[Error receiving response]';
+      this.cdRef.detectChanges();
+      stream.close();
+      this.loading = false;
+    })}
   }
 }

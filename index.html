@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ollama Streaming Chat</title>
+</head>
+<body>
+  <h2>Ask something:</h2>
+  <input type="text" id="question" value="বাংলাদেশের রাজধানী কী?" />
+  <button onclick="startStream()">Ask</button>
+  <pre id="output"></pre>
+
+  <script>
+    function startStream() {
+      const question = document.getElementById("question").value;
+      const output = document.getElementById("output");
+      output.textContent = "";
+
+      const eventSource = new EventSource(`/chat-stream?prompt=${encodeURIComponent(question)}`);
+      eventSource.onmessage = (event) => {
+        if (event.data === "[END]") {
+          eventSource.close();
+        } else {
+          output.textContent += event.data;
+        }
+      };
+    }
+  </script>
+</body>
+</html>
